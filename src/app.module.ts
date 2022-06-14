@@ -10,6 +10,7 @@ import config from '../ormconfig';
 import { JobApplicationModule } from './job-application/job-application.module';
 import { UserModule } from './user/user.module';
 import { ProfileModule } from './profile/profile.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ProfileModule } from './profile/profile.module';
     BlogCategoryModule,
     UserModule,
     ProfileModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
