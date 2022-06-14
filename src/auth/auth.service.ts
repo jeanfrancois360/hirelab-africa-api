@@ -20,10 +20,9 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
 
     const token_payload = { sub: user.id, email: user.email, type: 'user' };
-    // return {
-    //   access_token: this.jwtTokenService.sign(token_payload),
-    // };
-    return user;
+    return {
+      access_token: this.jwtTokenService.sign(token_payload),
+    };
   }
 
   async signUpLocal(payload: CreateUserDto): Promise<User> {
