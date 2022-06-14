@@ -1,6 +1,6 @@
 import { JobApplication } from 'src/job-application/entities/job-application.entity';
 import { JobCategory } from 'src/job-category/entities/job-category.entity';
-import { User } from 'src/user/entities/User.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -12,12 +12,12 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-export enum StatusOptions {
+export enum StatusEnum {
   ACTIVE = 'active',
   INACTIVE = 'inactive',
 }
 
-export enum TypeOptions {
+export enum TypeEnum {
   FULLTIME = 'Full-time',
   PARTTIME = 'Part-time',
   CONTRACT = 'Contract',
@@ -26,7 +26,7 @@ export enum TypeOptions {
   INTERNSHIP = 'Internship',
 }
 
-export enum WorkSpaceOptions {
+export enum WorkSpaceEnum {
   REMOTE = 'Remote',
   ONSITE = 'On-site',
 }
@@ -47,22 +47,22 @@ export class JobPost {
 
   @Column({
     type: 'enum',
-    enum: TypeOptions,
+    enum: TypeEnum,
   })
-  type: TypeOptions;
+  type: TypeEnum;
 
   @Column({
     type: 'enum',
-    enum: WorkSpaceOptions,
+    enum: WorkSpaceEnum,
   })
-  workspace: WorkSpaceOptions;
+  workspace: WorkSpaceEnum;
 
   @Column({
     type: 'enum',
-    enum: StatusOptions,
-    default: StatusOptions.INACTIVE,
+    enum: StatusEnum,
+    default: StatusEnum.INACTIVE,
   })
-  status: StatusOptions;
+  status: StatusEnum;
 
   @CreateDateColumn({
     type: 'timestamp',

@@ -16,27 +16,18 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-export enum TypeOptions {
-  FULLTIME = 'Full-time',
-  PARTTIME = 'Part-time',
-  CONTRACT = 'Contract',
-  TEMPORARY = 'Temporary',
-  VOLUNTEER = 'Volunteer',
-  INTERNSHIP = 'Internship',
-}
-
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true })
+  @Column({ unique: true })
   username: string;
 
   @Column({ unique: true })
   email: string;
 
-  @Column({ nullable: true })
+  @Column()
   password: string;
 
   @CreateDateColumn({

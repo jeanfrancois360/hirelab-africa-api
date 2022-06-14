@@ -1,5 +1,5 @@
 import { BlogCategory } from 'src/blog-category/entities/blog-category.entity';
-import { User } from 'src/user/entities/User.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -23,7 +23,7 @@ export class BlogPost {
   @Column()
   title: string;
 
-  @Column()
+  @Column('text')
   description: string;
 
   @Column({

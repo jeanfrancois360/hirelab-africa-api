@@ -1,5 +1,5 @@
 import { JobPost } from 'src/job-post/entities/job-post.entity';
-import { User } from 'src/user/entities/User.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -10,7 +10,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-export enum StatusOptions {
+export enum StatusEnum {
   ACCEPT = 'accept',
   REJECT = 'reject',
   PENDING = 'pending',
@@ -45,15 +45,15 @@ export class JobApplication {
   @Column()
   postcode: string;
 
-  @Column('text', { nullable: true })
+  @Column('text')
   cover_letter: string;
 
   @Column({
     type: 'enum',
-    enum: StatusOptions,
-    default: StatusOptions.PENDING,
+    enum: StatusEnum,
+    default: StatusEnum.PENDING,
   })
-  status: StatusOptions;
+  status: StatusEnum;
 
   @CreateDateColumn({
     type: 'timestamp',
