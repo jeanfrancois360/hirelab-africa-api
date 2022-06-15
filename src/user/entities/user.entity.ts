@@ -16,27 +16,18 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-export enum TypeOptions {
-  FULLTIME = 'Full-time',
-  PARTTIME = 'Part-time',
-  CONTRACT = 'Contract',
-  TEMPORARY = 'Temporary',
-  VOLUNTEER = 'Volunteer',
-  INTERNSHIP = 'Internship',
-}
-
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true })
-  username: string;
+  @Column({ unique: true })
+  code: string;
 
   @Column({ unique: true })
   email: string;
 
-  @Column({ nullable: true })
+  @Column()
   password: string;
 
   @CreateDateColumn({
@@ -52,7 +43,7 @@ export class User {
   })
   updated_at: Date;
 
-  @ManyToOne(() => Role, (role) => role.user)
+  @ManyToOne(() => Role, (role) => role.user, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'role_id' })
   role: Role;
 

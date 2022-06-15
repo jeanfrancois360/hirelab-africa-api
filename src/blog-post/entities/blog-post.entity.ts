@@ -1,5 +1,5 @@
 import { BlogCategory } from 'src/blog-category/entities/blog-category.entity';
-import { User } from 'src/user/entities/User.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -20,10 +20,13 @@ export class BlogPost {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ unique: true })
+  slug: string;
+
   @Column()
   title: string;
 
-  @Column()
+  @Column('text')
   description: string;
 
   @Column({
@@ -50,7 +53,7 @@ export class BlogPost {
   @JoinColumn({ name: 'blog_category_id' })
   blog_category: BlogCategory;
 
-  @ManyToOne(() => User, (user) => user.blog_post) // specify inverse side as a second parameter
+  @ManyToOne(() => User, (user) => user.blog_post, { onDelete: 'CASCADE' }) // specify inverse side as a second parameter
   @JoinColumn({ name: 'author' })
   user: User;
 }

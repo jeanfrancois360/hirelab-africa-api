@@ -1,4 +1,4 @@
-import { User } from 'src/user/entities/User.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -12,6 +12,9 @@ import {
 export class Profile {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({ unique: true })
+  slug: string;
 
   @Column({ nullable: true })
   first_name: string;
@@ -59,7 +62,7 @@ export class Profile {
   })
   updated_at: Date;
 
-  @OneToOne(() => User, (profile) => profile.profile)
+  @OneToOne(() => User, (profile) => profile.profile, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 }
