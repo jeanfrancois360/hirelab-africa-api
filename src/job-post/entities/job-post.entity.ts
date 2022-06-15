@@ -36,6 +36,9 @@ export class JobPost {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ unique: true })
+  slug: string;
+
   @Column()
   title: string;
 
@@ -77,11 +80,13 @@ export class JobPost {
   })
   update_at: Date;
 
-  @OneToOne(() => JobCategory, (job_category) => job_category.job_post) // specify inverse side as a second parameter
+  @OneToOne(() => JobCategory, (job_category) => job_category.job_post, {
+    onDelete: 'CASCADE',
+  }) // specify inverse side as a second parameter
   @JoinColumn({ name: 'job_category_id' })
   job_category: JobCategory;
 
-  @ManyToOne(() => User, (user) => user.job_post) // specify inverse side as a second parameter
+  @ManyToOne(() => User, (user) => user.job_post, { onDelete: 'CASCADE' }) // specify inverse side as a second parameter
   @JoinColumn({ name: 'posted_by' })
   user: User;
 

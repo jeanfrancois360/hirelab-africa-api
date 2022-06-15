@@ -15,6 +15,9 @@ export class Cv {
   id: number;
 
   @Column({ unique: true })
+  slug: string;
+
+  @Column({ unique: true })
   file: string;
 
   @CreateDateColumn({
@@ -30,7 +33,7 @@ export class Cv {
   })
   updated_at: Date;
 
-  @OneToOne(() => User, (cv) => cv.cv)
+  @OneToOne(() => User, (cv) => cv.cv, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'candidate' })
   user: User;
 }

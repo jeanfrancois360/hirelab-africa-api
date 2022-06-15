@@ -20,6 +20,9 @@ export class BlogPost {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ unique: true })
+  slug: string;
+
   @Column()
   title: string;
 
@@ -50,7 +53,7 @@ export class BlogPost {
   @JoinColumn({ name: 'blog_category_id' })
   blog_category: BlogCategory;
 
-  @ManyToOne(() => User, (user) => user.blog_post) // specify inverse side as a second parameter
+  @ManyToOne(() => User, (user) => user.blog_post, { onDelete: 'CASCADE' }) // specify inverse side as a second parameter
   @JoinColumn({ name: 'author' })
   user: User;
 }

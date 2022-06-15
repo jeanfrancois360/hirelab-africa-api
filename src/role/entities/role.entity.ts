@@ -17,7 +17,10 @@ export class Role {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
+  slug: string;
+
+  @Column({ unique: true })
   name: string;
 
   @Column({

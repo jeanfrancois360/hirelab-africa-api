@@ -16,51 +16,51 @@ export enum StatusEnum {
 export class CreateJobApplicationDto {
   @Length(3, 100)
   @IsNotEmpty()
-  first_name: string;
+  readonly first_name: string;
 
   @Length(3, 100)
   @IsNotEmpty()
-  last_name: string;
+  readonly last_name: string;
 
   @IsEmail()
   @Length(3, 100)
   @IsNotEmpty()
-  email: string;
+  readonly email: string;
 
   @Length(3, 16)
   @IsNotEmpty()
-  phone: string;
+  readonly phone: string;
 
   @Length(3, 100)
   @IsNotEmpty()
-  address: string;
+  readonly address: string;
 
   @Length(2, 100)
   @IsNotEmpty()
-  city: string;
+  readonly city: string;
 
   @Length(3, 100)
   @IsNotEmpty()
-  country: string;
+  readonly country: string;
 
   @Length(2, 100)
   @IsNotEmpty()
-  postcode: string;
+  readonly postcode: string;
 
   @IsNotEmpty()
-  cover_letter: string;
+  readonly cover_letter: string;
 
   @IsEnum(StatusEnum)
   @IsNotEmpty()
-  status: StatusEnum;
+  readonly status: StatusEnum;
 
   @IsInt()
   @Min(1)
   @IsNotEmpty()
-  user_id: string;
+  readonly user_id: string;
 
   @IsInt()
   @Min(1)
   @IsNotEmpty()
-  job_post: string;
+  readonly job_post: string;
 }

@@ -22,7 +22,7 @@ export class User {
   id: number;
 
   @Column({ unique: true })
-  username: string;
+  code: string;
 
   @Column({ unique: true })
   email: string;
@@ -43,7 +43,7 @@ export class User {
   })
   updated_at: Date;
 
-  @ManyToOne(() => Role, (role) => role.user)
+  @ManyToOne(() => Role, (role) => role.user, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'role_id' })
   role: Role;
 

@@ -21,6 +21,9 @@ export class JobApplication {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ unique: true })
+  slug: string;
+
   @Column()
   first_name: string;
 
@@ -68,11 +71,17 @@ export class JobApplication {
   })
   updated_at: Date;
 
-  @OneToOne(() => User, (JobApplication) => JobApplication.job_application)
+  @OneToOne(() => User, (JobApplication) => JobApplication.job_application, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToOne(() => JobPost, (JobApplication) => JobApplication.job_application)
+  @ManyToOne(
+    () => JobPost,
+    (JobApplication) => JobApplication.job_application,
+    { onDelete: 'CASCADE' },
+  )
   @JoinColumn({ name: 'job_post_id' })
   job_post: JobPost;
 }

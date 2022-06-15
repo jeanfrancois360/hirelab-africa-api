@@ -1,27 +1,58 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Profile } from 'src/profile/entities/profile.entity';
+import { Role } from 'src/role/entities/role.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
+import { v4 as uuidv4 } from 'uuid';
+import slugify from 'slugify';
+import { slugifyConstants } from 'src/constants';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(Role) private roleRepository: Repository<Role>,
+    @InjectRepository(Profile) private profileRepository: Repository<Profile>,
   ) {}
 
-  async createUser(payload: CreateUserDto): Promise<User> {
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
     try {
       // check if user already exist
       const user = await this.userRepository.findOneBy({
-        email: payload.email,
+        email: createUserDto.email,
       });
 
       if (user)
         throw new ConflictException('A user with this email already exists!');
 
-      const newUser = this.userRepository.create(payload);
-      return this.userRepository.save(newUser);
+      // Check if role already exists
+      const role = await this.roleRepository.findOneBy({
+        id: createUserDto.role_id,
+      });
+
+      if (!role)
+        throw new NotFoundException(
+          `A role with id[${createUserDto.role_id}] could not be found!`,
+        );
+
+      const newUser = this.userRepository.create(createUserDto);
+      newUser.role = role;
+      newUser.code = uuidv4();
+      if (this.userRepository.save(newUser)) {
+        const newProfile = this.profileRepository.create({
+          email: newUser.email,
+        });
+        newProfile.user = newUser;
+        newProfile.slug = slugify('New User', slugifyConstants);
+        this.profileRepository.save(newProfile);
+        return this.userRepository.save(newUser);
+      }
     } catch (error) {
       throw error;
     }
@@ -53,7 +84,7 @@ export class UserService {
 
   async updateUser(email: string, id: number): Promise<User> {
     const user = await this.getUserById(id);
-    user.username = email;
+    user.email = email;
     return this.userRepository.save(user);
   }
 

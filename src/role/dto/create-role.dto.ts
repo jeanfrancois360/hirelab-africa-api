@@ -8,9 +8,9 @@ export enum StatusEnum {
 export class CreateRoleDto {
   @Length(3, 100)
   @IsNotEmpty()
-  name: string;
+  readonly name: string;
 
   @IsEnum(StatusEnum)
   @IsNotEmpty()
-  status: StatusEnum;
+  readonly status: StatusEnum;
 }

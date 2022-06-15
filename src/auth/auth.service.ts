@@ -11,7 +11,7 @@ export class AuthService {
     private readonly jwtTokenService: JwtService,
   ) {}
 
-  async signInLocal(credentials: SignInDto): Promise<any> {
+  async signIn(credentials: SignInDto): Promise<any> {
     // retrieve user
     const user = await this.userService.getUserByEmail(credentials.email);
 
@@ -25,7 +25,7 @@ export class AuthService {
     };
   }
 
-  async signUpLocal(payload: CreateUserDto): Promise<User> {
-    return await this.userService.createUser(payload);
+  async signUp(createUserDto: CreateUserDto): Promise<User> {
+    return await this.userService.createUser(createUserDto);
   }
 }

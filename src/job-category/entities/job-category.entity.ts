@@ -17,6 +17,9 @@ export class JobCategory {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ unique: true })
+  slug: string;
+
   @Column()
   name: string;
 
