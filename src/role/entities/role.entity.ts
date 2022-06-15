@@ -21,6 +21,9 @@ export class Role {
   slug: string;
 
   @Column({ unique: true })
+  uuid: string;
+
+  @Column({ unique: true })
   name: string;
 
   @Column({

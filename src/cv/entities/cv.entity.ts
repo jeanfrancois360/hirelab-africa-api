@@ -15,7 +15,7 @@ export class Cv {
   id: number;
 
   @Column({ unique: true })
-  slug: string;
+  uuid: string;
 
   @Column({ unique: true })
   file: string;

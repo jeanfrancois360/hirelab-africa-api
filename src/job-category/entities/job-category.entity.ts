@@ -20,6 +20,9 @@ export class JobCategory {
   @Column({ unique: true })
   slug: string;
 
+  @Column({ unique: true })
+  uuid: string;
+
   @Column()
   name: string;
 

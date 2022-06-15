@@ -20,8 +20,11 @@ export class BlogPost {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column()
   slug: string;
+
+  @Column({ unique: true })
+  uuid: string;
 
   @Column()
   title: string;

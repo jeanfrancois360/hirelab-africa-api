@@ -10,6 +10,7 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
 import slugify from 'slugify';
 import { slugifyConstants } from 'src/constants';
+import { uuidGen } from 'src/utils/uuid-gen';
 @Injectable()
 export class RoleService {
   constructor(
@@ -25,6 +26,7 @@ export class RoleService {
         throw new ConflictException('A role with this name already exists!');
       const newRole = this.roleRepository.create(createRoleDto);
       newRole.slug = slugify(newRole.name, slugifyConstants);
+      newRole.uuid = uuidGen();
       return await this.roleRepository.save(newRole);
     } catch (error) {
       throw error;
