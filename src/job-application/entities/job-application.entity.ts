@@ -22,7 +22,7 @@ export class JobApplication {
   id: number;
 
   @Column({ unique: true })
-  slug: string;
+  uuid: string;
 
   @Column()
   first_name: string;

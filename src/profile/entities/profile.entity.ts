@@ -13,9 +13,6 @@ export class Profile {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
-  slug: string;
-
   @Column({ nullable: true })
   first_name: string;
 

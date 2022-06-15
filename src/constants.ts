@@ -8,6 +8,6 @@ export const slugifyConstants = {
   remove: undefined,
   lower: true,
   strict: false,
-  locale: 'vi',
+  locale: 'en',
   trim: true,
 };

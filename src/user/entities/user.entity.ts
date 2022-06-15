@@ -22,7 +22,7 @@ export class User {
   id: number;
 
   @Column({ unique: true })
-  code: string;
+  uuid: string;
 
   @Column({ unique: true })
   email: string;

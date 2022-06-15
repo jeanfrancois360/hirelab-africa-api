@@ -9,9 +9,7 @@ import { Role } from 'src/role/entities/role.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
-import { v4 as uuidv4 } from 'uuid';
-import slugify from 'slugify';
-import { slugifyConstants } from 'src/constants';
+import { uuidGen } from 'src/utils/uuid-gen';
 
 @Injectable()
 export class UserService {
@@ -43,13 +41,12 @@ export class UserService {
 
       const newUser = this.userRepository.create(createUserDto);
       newUser.role = role;
-      newUser.code = uuidv4();
+      newUser.uuid = uuidGen();
       if (this.userRepository.save(newUser)) {
         const newProfile = this.profileRepository.create({
           email: newUser.email,
         });
         newProfile.user = newUser;
-        newProfile.slug = slugify('New User', slugifyConstants);
         this.profileRepository.save(newProfile);
         return this.userRepository.save(newUser);
       }
