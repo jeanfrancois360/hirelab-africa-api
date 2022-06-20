@@ -78,12 +78,6 @@ export class UserService {
     }
   }
 
-  async updateUser(email: string, id: number): Promise<User> {
-    const user = await this.getUserById(id);
-    user.email = email;
-    return this.userRepository.save(user);
-  }
-
   async deleteUser(id: number): Promise<User> {
     const user = await this.getUserById(id);
     return this.userRepository.remove(user);

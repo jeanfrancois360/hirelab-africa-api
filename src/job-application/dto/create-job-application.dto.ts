@@ -57,10 +57,10 @@ export class CreateJobApplicationDto {
   @IsInt()
   @Min(1)
   @IsNotEmpty()
-  readonly user_id: string;
+  readonly candidate: number;
 
   @IsInt()
   @Min(1)
   @IsNotEmpty()
-  readonly job_post: string;
+  readonly job_post_id: number;
 }

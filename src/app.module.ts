@@ -11,6 +11,7 @@ import { JobApplicationModule } from './job-application/job-application.module';
 import { UserModule } from './user/user.module';
 import { ProfileModule } from './profile/profile.module';
 import { AuthModule } from './auth/auth.module';
+import { FileUploadModule } from './file-upload/file-upload.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     ProfileModule,
     AuthModule,
+    FileUploadModule,
   ],
 })
 export class AppModule {}
