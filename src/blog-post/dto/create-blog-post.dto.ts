@@ -10,9 +10,11 @@ export class CreateBlogPostDto {
 
   @IsInt()
   @Min(1)
+  @IsNotEmpty()
   readonly blog_category_id: number;
 
   @IsInt()
   @Min(1)
+  @IsNotEmpty()
   readonly author: number;
 }

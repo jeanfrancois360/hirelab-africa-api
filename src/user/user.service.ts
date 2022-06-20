@@ -1,22 +1,25 @@
 import {
   ConflictException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Profile } from 'src/profile/entities/profile.entity';
-import { Role } from 'src/role/entities/role.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { uuidGen } from 'src/utils/uuid-gen';
+import { RoleService } from 'src/role/role.service';
+import { ProfileService } from 'src/profile/profile.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-    @InjectRepository(Role) private roleRepository: Repository<Role>,
-    @InjectRepository(Profile) private profileRepository: Repository<Profile>,
+    private readonly roleService: RoleService,
+    @Inject(forwardRef(() => ProfileService))
+    private readonly profileService: ProfileService,
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -29,10 +32,8 @@ export class UserService {
       if (user)
         throw new ConflictException('A user with this email already exists!');
 
-      // Check if role already exists
-      const role = await this.roleRepository.findOneBy({
-        id: createUserDto.role_id,
-      });
+      // Check if role is available
+      const role = await this.roleService.getRoleById(createUserDto.role_id);
 
       if (!role)
         throw new NotFoundException(
@@ -43,11 +44,7 @@ export class UserService {
       newUser.role = role;
       newUser.uuid = uuidGen();
       if (this.userRepository.save(newUser)) {
-        const newProfile = this.profileRepository.create({
-          email: newUser.email,
-        });
-        newProfile.user = newUser;
-        this.profileRepository.save(newProfile);
+        this.profileService.createProfile(newUser.email);
         return this.userRepository.save(newUser);
       }
     } catch (error) {
@@ -62,6 +59,7 @@ export class UserService {
       },
     });
   }
+
   async getUserById(id: number): Promise<User> {
     try {
       const user = await this.userRepository.findOneBy({ id: id });
@@ -70,6 +68,7 @@ export class UserService {
       throw error;
     }
   }
+
   async getUserByEmail(email: string): Promise<User> {
     try {
       const user = await this.userRepository.findOneBy({ email: email });

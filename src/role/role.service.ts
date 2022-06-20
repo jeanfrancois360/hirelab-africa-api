@@ -33,7 +33,7 @@ export class RoleService {
     }
   }
 
-  async getAll(): Promise<Role[]> {
+  async getRoles(): Promise<Role[]> {
     try {
       return await this.roleRepository.find({ order: { id: 'DESC' } });
     } catch (error) {

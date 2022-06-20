@@ -32,6 +32,9 @@ export class BlogPost {
   @Column('text')
   description: string;
 
+  @Column()
+  image: string;
+
   @Column({
     type: 'enum',
     enum: StatusOptions,
