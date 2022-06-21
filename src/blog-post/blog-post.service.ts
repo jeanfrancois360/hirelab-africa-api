@@ -103,6 +103,7 @@ export class BlogPostService {
       blogPost.title = updateBlogPostDto.title;
       blogPost.slug = slugify(updateBlogPostDto.title, slugifyConstants);
       blogPost.description = updateBlogPostDto.description;
+      blogPost.image = updateBlogPostDto.image;
       blogPost.blog_category = blogCategory;
       blogPost.user = author;
       return this.blogPostRepository.save(blogPost);

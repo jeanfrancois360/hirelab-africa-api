@@ -8,6 +8,9 @@ export class CreateBlogPostDto {
   @IsNotEmpty()
   readonly description: string;
 
+  @IsNotEmpty()
+  readonly image: string;
+
   @IsInt()
   @Min(1)
   @IsNotEmpty()

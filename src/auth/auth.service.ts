@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
@@ -16,8 +17,12 @@ export class AuthService {
     const user = await this.userService.getUserByEmail(credentials.email);
 
     if (!user) throw new UnauthorizedException('Invalid credentials');
-    if (user.password !== credentials.password)
-      throw new UnauthorizedException('Invalid credentials');
+
+    const password = credentials.password;
+    const saltOrRounds = 16;
+    const hash = await bcrypt.hash(password, saltOrRounds);
+    const isMatch = await bcrypt.compare(password, hash);
+    if (!isMatch) throw new UnauthorizedException('Invalid credentials');
 
     const token_payload = { sub: user.id, email: user.email, type: 'user' };
     return {
@@ -26,6 +31,12 @@ export class AuthService {
   }
 
   async signUp(createUserDto: CreateUserDto): Promise<User> {
-    return await this.userService.createUser(createUserDto);
+    const password = createUserDto.password;
+    const saltOrRounds = 16;
+    const hash = await bcrypt.hash(password, saltOrRounds);
+    return await this.userService.createUser({
+      ...createUserDto,
+      password: hash,
+    });
   }
 }

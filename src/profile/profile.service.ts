@@ -25,6 +25,8 @@ export class ProfileService {
         throw new ConflictException(
           'A user with this email could not be found',
         );
+
+      throw new ConflictException('A user with this email already e');
       const newProfile = this.profileRepository.create({
         email: email,
       });
