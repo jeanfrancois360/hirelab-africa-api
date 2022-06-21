@@ -56,6 +56,7 @@ export class RoleService {
       const role = await this.getRoleById(id);
       if (!role) throw new NotFoundException(`Role not found!`);
       role.name = updateRoleDto.name;
+      role.slug = slugify(role.name, slugifyConstants);
       role.status = updateRoleDto.status;
       return this.roleRepository.save(role);
     } catch (error) {

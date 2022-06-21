@@ -56,6 +56,7 @@ export class JobCategoryService {
       const jobCategory = await this.getJobCategoryById(id);
       if (!jobCategory) throw new NotFoundException(`JobCategory not found!`);
       jobCategory.name = updateJobCategoryDto.name;
+      jobCategory.slug = slugify(jobCategory.name, slugifyConstants);
       return this.jobCategoryRepository.save(jobCategory);
     } catch (error) {
       throw error;

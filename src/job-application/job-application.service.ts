@@ -74,20 +74,10 @@ export class JobApplicationService {
     updateJobApplicationDto: UpdateJobApplicationDto,
   ): Promise<JobApplication> {
     try {
-      const jobPost = await this.jobPostService.getJobPostById(
-        updateJobApplicationDto.job_post_id,
-      );
-      if (jobPost) throw new ConflictException(`BlogCategory not found!`);
-
-      const candidate = await this.userService.getUserById(
-        updateJobApplicationDto.candidate,
-      );
-      if (candidate) throw new ConflictException(`User not found`);
       const jobApplication = await this.getJobApplicationById(id);
       if (!jobApplication)
         throw new NotFoundException(`JobApplication not found!`);
       jobApplication.status = updateJobApplicationDto.status;
-
       return this.jobApplicationRepository.save(jobApplication);
     } catch (error) {
       throw error;

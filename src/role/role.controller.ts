@@ -36,7 +36,7 @@ export class RoleController {
     return this.roleService.getRoleById(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  //@UseGuards(AuthGuard('jwt'))
   @Patch('update/:id')
   updateRole(
     @Param('id') id: number,
