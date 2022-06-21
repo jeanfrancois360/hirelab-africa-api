@@ -44,10 +44,7 @@ export class RoleService {
   async getRoleById(id: number): Promise<Role> {
     try {
       const role = await this.roleRepository.findOneBy({ id: id });
-      if (!role)
-        throw new NotFoundException(
-          `A role with id[${id}] could not be found!`,
-        );
+      if (!role) throw new NotFoundException(`Role not found!`);
       return role;
     } catch (error) {
       throw error;
@@ -57,8 +54,7 @@ export class RoleService {
   async updateRole(id: number, updateRoleDto: UpdateRoleDto): Promise<Role> {
     try {
       const role = await this.getRoleById(id);
-      if (!role)
-        throw new NotFoundException(`Role with id[${id}] could not be found!`);
+      if (!role) throw new NotFoundException(`Role not found!`);
       role.name = updateRoleDto.name;
       role.status = updateRoleDto.status;
       return this.roleRepository.save(role);
@@ -70,8 +66,7 @@ export class RoleService {
   async deleteRole(id: number): Promise<Role> {
     try {
       const role = await this.getRoleById(id);
-      if (!role)
-        throw new NotFoundException(`Role with id[${id}] could not be found!`);
+      if (!role) throw new NotFoundException(`Role not found!`);
       return this.roleRepository.remove(role);
     } catch (error) {
       throw error;

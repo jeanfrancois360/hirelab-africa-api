@@ -22,10 +22,7 @@ export class CvService {
     try {
       // Check if Cv already exists
       const user = await this.userService.getUserById(createCvDto.candidate);
-      if (!user)
-        throw new ConflictException(
-          `A user with id [${createCvDto.candidate}] could not be found!`,
-        );
+      if (!user) throw new ConflictException(`User not found!`);
       const newCv = this.cvRepository.create(createCvDto);
       newCv.uuid = uuidGen();
       return await this.cvRepository.save(newCv);
@@ -45,8 +42,7 @@ export class CvService {
   async getCvById(id: number): Promise<Cv> {
     try {
       const Cv = await this.cvRepository.findOneBy({ id: id });
-      if (!Cv)
-        throw new NotFoundException(`A Cv with id[${id}] could not be found!`);
+      if (!Cv) throw new NotFoundException(`Cv not found!`);
       return Cv;
     } catch (error) {
       throw error;

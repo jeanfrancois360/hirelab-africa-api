@@ -35,10 +35,7 @@ export class UserService {
       // Check if role is available
       const role = await this.roleService.getRoleById(createUserDto.role_id);
 
-      if (!role)
-        throw new NotFoundException(
-          `A role with id[${createUserDto.role_id}] could not be found!`,
-        );
+      if (!role) throw new NotFoundException(`Role not found!`);
 
       const newUser = this.userRepository.create(createUserDto);
       newUser.role = role;

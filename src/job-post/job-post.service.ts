@@ -27,18 +27,12 @@ export class JobPostService {
       const jobCategory = await this.jobCategoryService.getJobCategoryById(
         createJobPostDto.job_category_id,
       );
-      if (jobCategory)
-        throw new ConflictException(
-          `BlogCategory with id [${createJobPostDto.job_category_id}] could not be found!`,
-        );
+      if (jobCategory) throw new ConflictException(`BlogCategory not found!`);
 
       const posted_by = await this.userService.getUserById(
         createJobPostDto.posted_by,
       );
-      if (posted_by)
-        throw new ConflictException(
-          `User with id [${createJobPostDto.posted_by}] could not be found`,
-        );
+      if (posted_by) throw new ConflictException(`User not found`);
       const newJobPost = this.jobPostRepository.create(createJobPostDto);
       newJobPost.slug = slugify(newJobPost.title, slugifyConstants);
       newJobPost.uuid = uuidGen();
@@ -63,10 +57,7 @@ export class JobPostService {
       const jobPost = await this.jobPostRepository.findOneBy({
         id: id,
       });
-      if (!jobPost)
-        throw new NotFoundException(
-          `A JobPost with id[${id}] could not be found!`,
-        );
+      if (!jobPost) throw new NotFoundException(`JobPost not found!`);
       return jobPost;
     } catch (error) {
       throw error;
@@ -81,23 +72,14 @@ export class JobPostService {
       const jobCategory = await this.jobCategoryService.getJobCategoryById(
         updateJobPostDto.job_category_id,
       );
-      if (jobCategory)
-        throw new ConflictException(
-          `BlogCategory with id [${updateJobPostDto.job_category_id}] could not be found!`,
-        );
+      if (jobCategory) throw new ConflictException(`BlogCategory not found!`);
 
       const posted_by = await this.userService.getUserById(
         updateJobPostDto.posted_by,
       );
-      if (posted_by)
-        throw new ConflictException(
-          `User with id [${updateJobPostDto.posted_by}] could not be found`,
-        );
+      if (posted_by) throw new ConflictException(`User not found`);
       const jobPost = await this.getJobPostById(id);
-      if (!jobPost)
-        throw new NotFoundException(
-          `JobPost with id[${id}] could not be found!`,
-        );
+      if (!jobPost) throw new NotFoundException(`JobPost not found!`);
       jobPost.title = updateJobPostDto.title;
       jobPost.slug = slugify(updateJobPostDto.title, slugifyConstants);
       jobPost.description = updateJobPostDto.description;
@@ -116,10 +98,7 @@ export class JobPostService {
   async deleteJobPost(id: number): Promise<JobPost> {
     try {
       const jobPost = await this.getJobPostById(id);
-      if (!jobPost)
-        throw new NotFoundException(
-          `JobPost with id[${id}] could not be found!`,
-        );
+      if (!jobPost) throw new NotFoundException(`JobPost not found!`);
       return this.jobPostRepository.remove(jobPost);
     } catch (error) {
       throw error;

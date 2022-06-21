@@ -41,10 +41,7 @@ export class JobCategoryService {
       const jobCategory = await this.jobCategoryRepository.findOneBy({
         id: id,
       });
-      if (!jobCategory)
-        throw new NotFoundException(
-          `A JobCategory with id[${id}] could not be found!`,
-        );
+      if (!jobCategory) throw new NotFoundException(`JobCategory not found!`);
       return jobCategory;
     } catch (error) {
       throw error;
@@ -57,10 +54,7 @@ export class JobCategoryService {
   ): Promise<JobCategory> {
     try {
       const jobCategory = await this.getJobCategoryById(id);
-      if (!jobCategory)
-        throw new NotFoundException(
-          `JobCategory with id[${id}] could not be found!`,
-        );
+      if (!jobCategory) throw new NotFoundException(`JobCategory not found!`);
       jobCategory.name = updateJobCategoryDto.name;
       return this.jobCategoryRepository.save(jobCategory);
     } catch (error) {
@@ -71,10 +65,7 @@ export class JobCategoryService {
   async deleteJobCategory(id: number): Promise<JobCategory> {
     try {
       const jobCategory = await this.getJobCategoryById(id);
-      if (!jobCategory)
-        throw new NotFoundException(
-          `JobCategory with id[${id}] could not be found!`,
-        );
+      if (!jobCategory) throw new NotFoundException(`JobCategory not found!`);
       return this.jobCategoryRepository.remove(jobCategory);
     } catch (error) {
       throw error;

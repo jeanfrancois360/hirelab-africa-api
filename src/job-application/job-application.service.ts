@@ -28,18 +28,12 @@ export class JobApplicationService {
       const jobPost = await this.jobPostService.getJobPostById(
         createJobApplicationDto.job_post_id,
       );
-      if (jobPost)
-        throw new ConflictException(
-          `BlogCategory with id [${createJobApplicationDto.job_post_id}] could not be found!`,
-        );
+      if (jobPost) throw new ConflictException(`BlogCategory not found!`);
 
       const candidate = await this.userService.getUserById(
         createJobApplicationDto.candidate,
       );
-      if (candidate)
-        throw new ConflictException(
-          `User with id [${createJobApplicationDto.candidate}] could not be found`,
-        );
+      if (candidate) throw new ConflictException(`User not found`);
       const newJobApplication = this.jobApplicationRepository.create(
         createJobApplicationDto,
       );
@@ -68,9 +62,7 @@ export class JobApplicationService {
         id: id,
       });
       if (!jobApplication)
-        throw new NotFoundException(
-          `A JobApplication with id[${id}] could not be found!`,
-        );
+        throw new NotFoundException(`JobApplication not found!`);
       return jobApplication;
     } catch (error) {
       throw error;
@@ -85,23 +77,15 @@ export class JobApplicationService {
       const jobPost = await this.jobPostService.getJobPostById(
         updateJobApplicationDto.job_post_id,
       );
-      if (jobPost)
-        throw new ConflictException(
-          `BlogCategory with id [${updateJobApplicationDto.job_post_id}] could not be found!`,
-        );
+      if (jobPost) throw new ConflictException(`BlogCategory not found!`);
 
       const candidate = await this.userService.getUserById(
         updateJobApplicationDto.candidate,
       );
-      if (candidate)
-        throw new ConflictException(
-          `User with id [${updateJobApplicationDto.candidate}] could not be found`,
-        );
+      if (candidate) throw new ConflictException(`User not found`);
       const jobApplication = await this.getJobApplicationById(id);
       if (!jobApplication)
-        throw new NotFoundException(
-          `JobApplication with id[${id}] could not be found!`,
-        );
+        throw new NotFoundException(`JobApplication not found!`);
       jobApplication.status = updateJobApplicationDto.status;
 
       return this.jobApplicationRepository.save(jobApplication);
@@ -114,9 +98,7 @@ export class JobApplicationService {
     try {
       const jobApplication = await this.getJobApplicationById(id);
       if (!jobApplication)
-        throw new NotFoundException(
-          `JobApplication with id[${id}] could not be found!`,
-        );
+        throw new NotFoundException(`JobApplication not found!`);
       return this.jobApplicationRepository.remove(jobApplication);
     } catch (error) {
       throw error;

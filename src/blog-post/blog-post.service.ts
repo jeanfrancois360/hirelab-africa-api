@@ -29,18 +29,12 @@ export class BlogPostService {
       const blogCategory = await this.blogCategoryService.getBlogCategoryById(
         createBlogPostDto.blog_category_id,
       );
-      if (blogCategory)
-        throw new ConflictException(
-          `BlogCategory with id [${createBlogPostDto.blog_category_id}] could not be found!`,
-        );
+      if (blogCategory) throw new ConflictException(`BlogCategory not found!`);
 
       const author = await this.userService.getUserById(
         createBlogPostDto.author,
       );
-      if (author)
-        throw new ConflictException(
-          `User with id [${createBlogPostDto.author}] could not be found`,
-        );
+      if (author) throw new ConflictException(`User not found`);
       const newBlogPost = this.blogPostRepository.create(createBlogPostDto);
       newBlogPost.slug = slugify(newBlogPost.title, slugifyConstants);
       newBlogPost.uuid = uuidGen();
@@ -65,10 +59,7 @@ export class BlogPostService {
       const blogPost = await this.blogPostRepository.findOneBy({
         id: id,
       });
-      if (!blogPost)
-        throw new NotFoundException(
-          `A BlogPost with id[${id}] could not be found!`,
-        );
+      if (!blogPost) throw new NotFoundException(`BlogPost not found!`);
       return blogPost;
     } catch (error) {
       throw error;
@@ -81,25 +72,16 @@ export class BlogPostService {
   ): Promise<BlogPost> {
     try {
       const blogPost = await this.getBlogPostById(id);
-      if (!blogPost)
-        throw new NotFoundException(
-          `BlogPost with id[${id}] could not be found!`,
-        );
+      if (!blogPost) throw new NotFoundException(`BlogPost not found!`);
       const blogCategory = await this.blogCategoryService.getBlogCategoryById(
         updateBlogPostDto.blog_category_id,
       );
-      if (blogCategory)
-        throw new ConflictException(
-          `BlogCategory with id [${updateBlogPostDto.blog_category_id}] could not be found!`,
-        );
+      if (blogCategory) throw new ConflictException(`BlogCategory not found!`);
 
       const author = await this.userService.getUserById(
         updateBlogPostDto.author,
       );
-      if (author)
-        throw new ConflictException(
-          `User with id [${updateBlogPostDto.author}] could not be found`,
-        );
+      if (author) throw new ConflictException(`User not found`);
       blogPost.title = updateBlogPostDto.title;
       blogPost.slug = slugify(updateBlogPostDto.title, slugifyConstants);
       blogPost.description = updateBlogPostDto.description;
@@ -115,10 +97,7 @@ export class BlogPostService {
   async deleteBlogPost(id: number): Promise<BlogPost> {
     try {
       const blogPost = await this.getBlogPostById(id);
-      if (!blogPost)
-        throw new NotFoundException(
-          `BlogPost with id[${id}] could not be found!`,
-        );
+      if (!blogPost) throw new NotFoundException(`BlogPost not found!`);
       return this.blogPostRepository.remove(blogPost);
     } catch (error) {
       throw error;

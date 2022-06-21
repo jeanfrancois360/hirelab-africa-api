@@ -42,10 +42,7 @@ export class BlogCategoryService {
       const blogCategory = await this.blogCategoryRepository.findOneBy({
         id: id,
       });
-      if (!blogCategory)
-        throw new NotFoundException(
-          `A BlogCategory with id[${id}] could not be found!`,
-        );
+      if (!blogCategory) throw new NotFoundException(`BlogCategory not found!`);
       return blogCategory;
     } catch (error) {
       throw error;
@@ -58,10 +55,7 @@ export class BlogCategoryService {
   ): Promise<BlogCategory> {
     try {
       const blogCategory = await this.getBlogCategoryById(id);
-      if (!blogCategory)
-        throw new NotFoundException(
-          `BlogCategory with id[${id}] could not be found!`,
-        );
+      if (!blogCategory) throw new NotFoundException(`BlogCategory not found!`);
       blogCategory.name = updateBlogCategoryDto.name;
       return this.blogCategoryRepository.save(blogCategory);
     } catch (error) {
@@ -72,10 +66,7 @@ export class BlogCategoryService {
   async deleteBlogCategory(id: number): Promise<BlogCategory> {
     try {
       const blogCategory = await this.getBlogCategoryById(id);
-      if (!blogCategory)
-        throw new NotFoundException(
-          `BlogCategory with id[${id}] could not be found!`,
-        );
+      if (!blogCategory) throw new NotFoundException(`BlogCategory not found!`);
       return this.blogCategoryRepository.remove(blogCategory);
     } catch (error) {
       throw error;

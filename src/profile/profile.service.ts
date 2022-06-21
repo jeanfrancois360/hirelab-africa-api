@@ -21,12 +21,7 @@ export class ProfileService {
   async createProfile(email: string): Promise<Profile> {
     try {
       const user = await this.userService.getUserByEmail(email);
-      if (!user)
-        throw new ConflictException(
-          'A user with this email could not be found',
-        );
-
-      throw new ConflictException('A user with this email already e');
+      if (!user) throw new ConflictException('User not found!');
       const newProfile = this.profileRepository.create({
         email: email,
       });
@@ -60,7 +55,7 @@ export class ProfileService {
   ): Promise<Profile> {
     try {
       const profile = await this.getProfileById(id);
-      if (!profile) throw new ConflictException(`A profile with id [${id}]`);
+      if (!profile) throw new ConflictException(`Profile not found!`);
       profile.first_name = updateProfileDto.first_name;
       profile.last_name = updateProfileDto.last_name;
       profile.company_name = updateProfileDto.company_name;
