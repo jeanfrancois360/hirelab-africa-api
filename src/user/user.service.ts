@@ -33,16 +33,20 @@ export class UserService {
         throw new ConflictException('A user with this email already exists!');
 
       // Check if role is available
-      const role = await this.roleService.getRoleById(createUserDto.role_id);
+      const role = await this.roleService.getRoleByName(createUserDto.role);
 
       if (!role) throw new NotFoundException(`Role not found!`);
 
-      const newUser = this.userRepository.create(createUserDto);
+      const newUser = this.userRepository.create({
+        email: createUserDto.email,
+        password: createUserDto.password,
+      });
       newUser.role = role;
       newUser.uuid = uuidGen();
-      if (this.userRepository.save(newUser)) {
-        this.profileService.createProfile(newUser.email);
-        return this.userRepository.save(newUser);
+      if (await this.userRepository.save(newUser)) {
+        if (await this.profileService.createProfile(createUserDto)) {
+          return newUser;
+        }
       }
     } catch (error) {
       throw error;

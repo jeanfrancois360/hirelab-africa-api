@@ -5,6 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { UpdateProfileDto } from './dto/update-profile.dto';
@@ -18,12 +19,16 @@ export class ProfileService {
     private readonly userService: UserService,
   ) {}
 
-  async createProfile(email: string): Promise<Profile> {
+  async createProfile(createUserDto: CreateUserDto): Promise<Profile> {
     try {
-      const user = await this.userService.getUserByEmail(email);
+      const user = await this.userService.getUserByEmail(createUserDto.email);
       if (!user) throw new ConflictException('User not found!');
       const newProfile = this.profileRepository.create({
-        email: email,
+        first_name: createUserDto.first_name,
+        last_name: createUserDto.last_name,
+        email: createUserDto.email,
+        company_name: createUserDto.company_name,
+        company_description: createUserDto.company_description,
       });
       newProfile.user = user;
       return await this.profileRepository.save(newProfile);

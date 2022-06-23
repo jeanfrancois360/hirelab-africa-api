@@ -12,7 +12,7 @@ export class AuthService {
     private readonly jwtTokenService: JwtService,
   ) {}
 
-  async signIn(credentials: SignInDto): Promise<any> {
+  async signIn(credentials: SignInDto): Promise<object> {
     // retrieve user
     const user = await this.userService.getUserByEmail(credentials.email);
 
