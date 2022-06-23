@@ -72,7 +72,12 @@ export class UserService {
 
   async getUserByEmail(email: string): Promise<User> {
     try {
-      const user = await this.userRepository.findOneBy({ email: email });
+      const user = await this.userRepository.findOne({
+        where: {
+          email: email,
+        },
+        relations: ['profile', 'role'],
+      });
       return user;
     } catch (error) {
       throw error;

@@ -18,13 +18,13 @@ import { Cv } from './entities/cv.entity';
 export class CvController {
   constructor(private readonly cvService: CvService) {}
 
-  // @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   @Post('add')
   createCv(@Body() createCvDto: CreateCvDto): Promise<Cv> {
     return this.cvService.createCv(createCvDto);
   }
 
-  //@UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   getCvs(): Promise<Cv[]> {
     return this.cvService.getCvs();

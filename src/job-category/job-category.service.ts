@@ -57,7 +57,7 @@ export class JobCategoryService {
       if (!jobCategory) throw new NotFoundException(`JobCategory not found!`);
       jobCategory.name = updateJobCategoryDto.name;
       jobCategory.slug = slugify(jobCategory.name, slugifyConstants);
-      return this.jobCategoryRepository.save(jobCategory);
+      return await this.jobCategoryRepository.save(jobCategory);
     } catch (error) {
       throw error;
     }
@@ -67,7 +67,7 @@ export class JobCategoryService {
     try {
       const jobCategory = await this.getJobCategoryById(id);
       if (!jobCategory) throw new NotFoundException(`JobCategory not found!`);
-      return this.jobCategoryRepository.remove(jobCategory);
+      return await this.jobCategoryRepository.remove(jobCategory);
     } catch (error) {
       throw error;
     }

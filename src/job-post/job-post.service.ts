@@ -89,7 +89,7 @@ export class JobPostService {
       jobPost.workspace = updateJobPostDto.workspace;
       jobPost.job_category = jobCategory;
       jobPost.user = posted_by;
-      return this.jobPostRepository.save(jobPost);
+      return await this.jobPostRepository.save(jobPost);
     } catch (error) {
       throw error;
     }
@@ -99,7 +99,7 @@ export class JobPostService {
     try {
       const jobPost = await this.getJobPostById(id);
       if (!jobPost) throw new NotFoundException(`JobPost not found!`);
-      return this.jobPostRepository.remove(jobPost);
+      return await this.jobPostRepository.remove(jobPost);
     } catch (error) {
       throw error;
     }
