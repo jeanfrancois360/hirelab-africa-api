@@ -84,6 +84,22 @@ export class UserService {
     }
   }
 
+  async getUserByRole(role_name: string): Promise<User> {
+    try {
+      const companies = await this.userRepository.findOne({
+        where: {
+          role: {
+            name: role_name,
+          },
+        },
+        relations: ['profile', 'role'],
+      });
+      return companies;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async deleteUser(id: number): Promise<User> {
     const user = await this.getUserById(id);
     return this.userRepository.remove(user);

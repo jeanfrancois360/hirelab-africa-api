@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
@@ -19,11 +19,13 @@ export class RoleService {
   async createRole(createRoleDto: CreateRoleDto): Promise<Role> {
     try {
       // Check if role already exists
-      const role = await this.roleRepository.findOneBy({
-        name: createRoleDto.name,
+      const exists = await this.roleRepository.findBy({
+        name: Like(`%${createRoleDto.name}%`),
       });
-      if (role)
-        throw new ConflictException('A role with this name already exists!');
+
+      if (exists.length > 0)
+        throw new ConflictException(`A role with this name already exists!`);
+
       const newRole = this.roleRepository.create(createRoleDto);
       newRole.slug = slugify(newRole.name, slugifyConstants);
       newRole.uuid = uuidGen();

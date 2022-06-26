@@ -26,11 +26,13 @@ export class JobCategoryController {
     return this.jobCategoryService.createJobCategory(createJobCategoryDto);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   getJobCategories(): Promise<JobCategory[]> {
     return this.jobCategoryService.getJobCategories();
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   getJobCategory(@Param('id') id: number): Promise<JobCategory> {
     return this.jobCategoryService.getJobCategoryById(id);

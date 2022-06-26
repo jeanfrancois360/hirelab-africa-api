@@ -1,9 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import slugify from 'slugify';
 import { slugifyConstants } from 'src/constants';
 import { uuidGen } from 'src/utils/uuid-gen';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreateJobCategoryDto } from './dto/create-job-category.dto';
 import { UpdateJobCategoryDto } from './dto/update-job-category.dto';
 import { JobCategory } from './entities/job-category.entity';
@@ -18,6 +22,13 @@ export class JobCategoryService {
     createJobCategoryDto: CreateJobCategoryDto,
   ): Promise<JobCategory> {
     try {
+      const exists = await this.jobCategoryRepository.findBy({
+        name: Like(`%${createJobCategoryDto.name}%`),
+      });
+
+      if (exists.length > 0)
+        throw new ConflictException(`This category already exists!`);
+
       const newJobCategory =
         this.jobCategoryRepository.create(createJobCategoryDto);
       newJobCategory.slug = slugify(newJobCategory.name, slugifyConstants);
@@ -57,6 +68,7 @@ export class JobCategoryService {
       if (!jobCategory) throw new NotFoundException(`JobCategory not found!`);
       jobCategory.name = updateJobCategoryDto.name;
       jobCategory.slug = slugify(jobCategory.name, slugifyConstants);
+      jobCategory.status = updateJobCategoryDto.status;
       return await this.jobCategoryRepository.save(jobCategory);
     } catch (error) {
       throw error;

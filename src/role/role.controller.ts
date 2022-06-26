@@ -18,13 +18,13 @@ import { RoleService } from './role.service';
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
-  @UseGuards(AuthGuard('jwt'))
+  //@UseGuards(AuthGuard('jwt'))
   @Post('add')
   createRole(@Body() createRoleDto: CreateRoleDto): Promise<Role> {
     return this.roleService.createRole(createRoleDto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  //@UseGuards(AuthGuard('jwt'))
   @Get()
   getRoles(): Promise<Role[]> {
     return this.roleService.getRoles();

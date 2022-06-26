@@ -1,9 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import slugify from 'slugify';
 import { slugifyConstants } from 'src/constants';
 import { uuidGen } from 'src/utils/uuid-gen';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreateBlogCategoryDto } from './dto/create-blog-category.dto';
 import { UpdateBlogCategoryDto } from './dto/update-blog-category.dto';
 import { BlogCategory } from './entities/blog-category.entity';
@@ -18,6 +22,13 @@ export class BlogCategoryService {
     createBlogCategoryDto: CreateBlogCategoryDto,
   ): Promise<BlogCategory> {
     try {
+      const exists = await this.blogCategoryRepository.findBy({
+        name: Like(`%${createBlogCategoryDto.name}%`),
+      });
+
+      if (exists.length > 0)
+        throw new ConflictException(`This category already exists!`);
+
       const newBlogCategory = this.blogCategoryRepository.create(
         createBlogCategoryDto,
       );

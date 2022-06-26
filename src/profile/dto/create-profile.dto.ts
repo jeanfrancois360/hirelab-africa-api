@@ -1,42 +1,25 @@
-import { IsInt, IsNotEmpty, Length, Min } from 'class-validator';
-
 export class CreateProfileDto {
-  @Length(3, 100)
-  readonly first_name: string;
+  readonly first_name?: string;
 
-  @Length(3, 100)
-  readonly last_name: string;
+  readonly last_name?: string;
 
-  @Length(3, 100)
-  readonly company_name: string;
+  readonly company_name?: string;
 
-  @Length(3, 100)
-  readonly company_description: string;
+  readonly company_description?: string;
 
-  @Length(3, 100)
-  @IsNotEmpty()
-  readonly email: string;
+  readonly email?: string;
 
-  @Length(3, 100)
-  readonly phone: string;
+  readonly phone?: string;
 
-  @Length(3, 100)
-  readonly address: string;
+  readonly address?: string;
 
-  @Length(3, 100)
-  readonly city: string;
+  readonly city?: string;
 
-  @Length(3, 100)
-  readonly country: string;
+  readonly country?: string;
 
-  @Length(3, 100)
-  readonly postcode: string;
+  readonly postcode?: string;
 
-  @Length(3, 100)
-  readonly avatar: string;
+  readonly avatar?: string;
 
-  @IsInt()
-  @Min(1)
-  @IsNotEmpty()
-  readonly user_id: string;
+  readonly user_id?: string;
 }

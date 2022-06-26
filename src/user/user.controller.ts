@@ -19,6 +19,18 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @Get('search-email:email')
+  getUserByEmail(@Param('email') email: string): Promise<User> {
+    return this.userService.getUserByEmail(email);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('search-role/:role_name')
+  getUserByRole(@Param('role_name') role_name: string): Promise<User> {
+    return this.userService.getUserByRole(role_name);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Delete('delete/:id')
   deleteRole(@Param('id') id: number): Promise<User> {
     return this.userService.deleteUser(id);

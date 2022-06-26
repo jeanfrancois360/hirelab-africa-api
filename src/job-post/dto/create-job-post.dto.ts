@@ -20,7 +20,7 @@ export enum WorkSpaceEnum {
 }
 
 export class CreateJobPostDto {
-  @Length(3, 100)
+  @Length(2, 100)
   @IsNotEmpty()
   readonly title: string;
 
@@ -29,7 +29,7 @@ export class CreateJobPostDto {
 
   @Length(1, 30)
   @IsNotEmpty()
-  readonly salary_range: string;
+  readonly salary_range?: string;
 
   @IsEnum(TypeEnum)
   @IsNotEmpty()

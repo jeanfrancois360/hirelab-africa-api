@@ -1,7 +1,7 @@
 import { IsNotEmpty, Length } from 'class-validator';
 
 export class CreateBlogCategoryDto {
-  @Length(3, 100)
+  @Length(2, 100)
   @IsNotEmpty()
   readonly name: string;
 }

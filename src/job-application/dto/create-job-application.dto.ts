@@ -14,16 +14,16 @@ export enum StatusEnum {
 }
 
 export class CreateJobApplicationDto {
-  @Length(3, 100)
+  @Length(2, 100)
   @IsNotEmpty()
   readonly first_name: string;
 
-  @Length(3, 100)
+  @Length(2, 100)
   @IsNotEmpty()
   readonly last_name: string;
 
   @IsEmail()
-  @Length(3, 100)
+  @Length(2, 100)
   @IsNotEmpty()
   readonly email: string;
 
@@ -31,7 +31,7 @@ export class CreateJobApplicationDto {
   @IsNotEmpty()
   readonly phone: string;
 
-  @Length(3, 100)
+  @Length(2, 100)
   @IsNotEmpty()
   readonly address: string;
 
@@ -39,7 +39,7 @@ export class CreateJobApplicationDto {
   @IsNotEmpty()
   readonly city: string;
 
-  @Length(3, 100)
+  @Length(2, 100)
   @IsNotEmpty()
   readonly country: string;
 

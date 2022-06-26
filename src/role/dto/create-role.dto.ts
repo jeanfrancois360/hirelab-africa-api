@@ -6,7 +6,7 @@ export enum StatusEnum {
 }
 
 export class CreateRoleDto {
-  @Length(3, 100)
+  @Length(2, 100)
   @IsNotEmpty()
   readonly name: string;
 
