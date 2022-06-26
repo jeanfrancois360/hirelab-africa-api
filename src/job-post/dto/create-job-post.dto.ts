@@ -1,23 +1,9 @@
 import { IsEnum, IsInt, IsNotEmpty, Length, Min } from 'class-validator';
-
-export enum StatusEnum {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
-}
-
-export enum TypeEnum {
-  FULLTIME = 'Full-time',
-  PARTTIME = 'Part-time',
-  CONTRACT = 'Contract',
-  TEMPORARY = 'Temporary',
-  VOLUNTEER = 'Volunteer',
-  INTERNSHIP = 'Internship',
-}
-
-export enum WorkSpaceEnum {
-  REMOTE = 'Remote',
-  ONSITE = 'On-site',
-}
+import {
+  StatusEnum,
+  TypeEnum,
+  WorkSpaceEnum,
+} from '../entities/job-post.entity';
 
 export class CreateJobPostDto {
   @Length(2, 100)
@@ -30,6 +16,10 @@ export class CreateJobPostDto {
   @Length(1, 30)
   @IsNotEmpty()
   readonly salary_range?: string;
+
+  @Length(2, 100)
+  @IsNotEmpty()
+  readonly address: string;
 
   @IsEnum(TypeEnum)
   @IsNotEmpty()

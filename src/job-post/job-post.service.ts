@@ -27,12 +27,11 @@ export class JobPostService {
       const jobCategory = await this.jobCategoryService.getJobCategoryById(
         createJobPostDto.job_category_id,
       );
-      if (jobCategory) throw new ConflictException(`BlogCategory not found!`);
 
       const posted_by = await this.userService.getUserById(
         createJobPostDto.posted_by,
       );
-      if (posted_by) throw new ConflictException(`User not found`);
+
       const newJobPost = this.jobPostRepository.create(createJobPostDto);
       newJobPost.slug = slugify(newJobPost.title, slugifyConstants);
       newJobPost.uuid = uuidGen();
@@ -85,6 +84,7 @@ export class JobPostService {
       jobPost.description = updateJobPostDto.description;
       jobPost.type = updateJobPostDto.type;
       jobPost.salary_range = updateJobPostDto.salary_range;
+      jobPost.address = updateJobPostDto.address;
       jobPost.status = updateJobPostDto.status;
       jobPost.workspace = updateJobPostDto.workspace;
       jobPost.job_category = jobCategory;

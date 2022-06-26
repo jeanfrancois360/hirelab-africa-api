@@ -13,8 +13,8 @@ import {
 } from 'typeorm';
 
 export enum StatusEnum {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive',
 }
 
 export enum TypeEnum {
@@ -50,6 +50,9 @@ export class JobPost {
 
   @Column()
   salary_range: string;
+
+  @Column()
+  address: string;
 
   @Column({
     type: 'enum',

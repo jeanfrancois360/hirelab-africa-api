@@ -64,6 +64,7 @@ export class UserService {
   async getUserById(id: number): Promise<User> {
     try {
       const user = await this.userRepository.findOneBy({ id: id });
+      if (!user) throw new ConflictException(`User not found`);
       return user;
     } catch (error) {
       throw error;
@@ -84,9 +85,9 @@ export class UserService {
     }
   }
 
-  async getUserByRole(role_name: string): Promise<User> {
+  async getUserByRole(role_name: string): Promise<User[]> {
     try {
-      const companies = await this.userRepository.findOne({
+      const companies = await this.userRepository.find({
         where: {
           role: {
             name: role_name,
