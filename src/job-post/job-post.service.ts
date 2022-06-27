@@ -45,7 +45,10 @@ export class JobPostService {
 
   async getJobPosts(): Promise<JobPost[]> {
     try {
-      return await this.jobPostRepository.find({ order: { id: 'DESC' } });
+      return await this.jobPostRepository.find({
+        order: { id: 'DESC' },
+        relations: ['job_category', 'user'],
+      });
     } catch (error) {
       throw error;
     }
@@ -71,12 +74,13 @@ export class JobPostService {
       const jobCategory = await this.jobCategoryService.getJobCategoryById(
         updateJobPostDto.job_category_id,
       );
-      if (jobCategory) throw new ConflictException(`BlogCategory not found!`);
+      if (!jobCategory) throw new ConflictException(`BlogCategory not found!`);
 
       const posted_by = await this.userService.getUserById(
         updateJobPostDto.posted_by,
       );
-      if (posted_by) throw new ConflictException(`User not found`);
+      if (!posted_by) throw new ConflictException(`User not found`);
+
       const jobPost = await this.getJobPostById(id);
       if (!jobPost) throw new NotFoundException(`JobPost not found!`);
       jobPost.title = updateJobPostDto.title;
