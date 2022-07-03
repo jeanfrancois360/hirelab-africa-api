@@ -3,7 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -46,6 +46,6 @@ export class BlogCategory {
   })
   updated_at: Date;
 
-  @OneToOne(() => BlogPost, (blog_post) => blog_post.blog_category)
+  @OneToMany(() => BlogPost, (blog_post) => blog_post.blog_category)
   blog_post: BlogPost;
 }

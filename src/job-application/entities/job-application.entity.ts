@@ -6,7 +6,6 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -71,7 +70,7 @@ export class JobApplication {
   })
   updated_at: Date;
 
-  @OneToOne(() => User, (JobApplication) => JobApplication.job_application, {
+  @ManyToOne(() => User, (JobApplication) => JobApplication.job_application, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'user_id' })

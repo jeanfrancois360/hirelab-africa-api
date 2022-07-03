@@ -6,7 +6,6 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -55,7 +54,7 @@ export class BlogPost {
   })
   update_at: Date;
 
-  @OneToOne(() => BlogCategory, (blog_category) => blog_category.blog_post) // specify inverse side as a second parameter
+  @ManyToOne(() => BlogCategory, (blog_category) => blog_category.blog_post) // specify inverse side as a second parameter
   @JoinColumn({ name: 'blog_category_id' })
   blog_category: BlogCategory;
 

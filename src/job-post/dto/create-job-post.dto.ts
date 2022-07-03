@@ -13,7 +13,7 @@ export class CreateJobPostDto {
   @IsNotEmpty()
   readonly description: string;
 
-  @Length(1, 30)
+  @Length(2, 100)
   @IsNotEmpty()
   readonly salary_range?: string;
 

@@ -63,7 +63,12 @@ export class UserService {
 
   async getUserById(id: number): Promise<User> {
     try {
-      const user = await this.userRepository.findOneBy({ id: id });
+      const user = await this.userRepository.findOne({
+        where: {
+          id: id,
+        },
+        relations: ['profile', 'role', 'cv'],
+      });
       if (!user) throw new ConflictException(`User not found`);
       return user;
     } catch (error) {
@@ -77,7 +82,7 @@ export class UserService {
         where: {
           email: email,
         },
-        relations: ['profile', 'role'],
+        relations: ['profile', 'role', 'cv'],
       });
       return user;
     } catch (error) {
@@ -93,7 +98,7 @@ export class UserService {
             name: role_name,
           },
         },
-        relations: ['profile', 'role'],
+        relations: ['profile', 'role', 'cv'],
       });
       return companies;
     } catch (error) {

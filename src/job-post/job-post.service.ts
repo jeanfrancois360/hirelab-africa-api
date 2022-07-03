@@ -66,6 +66,18 @@ export class JobPostService {
     }
   }
 
+  async getJobPostByUUID(uuid: string): Promise<JobPost> {
+    try {
+      const jobPost = await this.jobPostRepository.findOneBy({
+        uuid: uuid,
+      });
+      if (!jobPost) throw new NotFoundException(`JobPost not found!`);
+      return jobPost;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async updateJobPost(
     id: number,
     updateJobPostDto: UpdateJobPostDto,

@@ -10,6 +10,7 @@ import { Repository } from 'typeorm';
 import { CreateCvDto } from './dto/create-cv.dto';
 import { UpdateCvDto } from './dto/update-cv.dto';
 import { Cv } from './entities/cv.entity';
+import fs from 'fs';
 
 @Injectable()
 export class CvService {
@@ -20,7 +21,7 @@ export class CvService {
 
   async createCv(createCvDto: CreateCvDto): Promise<Cv> {
     try {
-      // Check if Cv already exists
+      // Check if candidate exists
       const user = await this.userService.getUserById(createCvDto.candidate);
       if (!user) throw new ConflictException(`User not found!`);
       const newCv = this.cvRepository.create(createCvDto);
@@ -52,8 +53,17 @@ export class CvService {
   async updateCv(id: number, updateCvDto: UpdateCvDto): Promise<Cv> {
     try {
       const cv = await this.getCvById(id);
-      if (!cv)
+      if (!cv) {
         throw new NotFoundException(`A CV with id[${id}] could not be found!`);
+      } else {
+        const path = `./uploads/${cv.file}`;
+        // Delete existing file from the storage
+        // fs.unlink(path, function (err: any) {
+        //   if (err) throw err;
+        //   // if no error, file has been deleted successfully
+        //   console.log('File deleted!');
+        // });
+      }
       cv.file = updateCvDto.file;
       return this.cvRepository.save(cv);
     } catch (error) {

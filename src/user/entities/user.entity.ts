@@ -56,7 +56,7 @@ export class User {
   @OneToMany(() => BlogPost, (blog_post) => blog_post.user)
   blog_post: BlogPost;
 
-  @OneToOne(() => JobApplication, (user) => user.user)
+  @OneToMany(() => JobApplication, (user) => user.user)
   job_application: JobApplication;
 
   @OneToMany(() => JobPost, (blog_post) => blog_post.user)

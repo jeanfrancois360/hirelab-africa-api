@@ -8,7 +8,6 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -84,9 +83,9 @@ export class JobPost {
     default: () => 'CURRENT_TIMESTAMP(6)',
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
-  update_at: Date;
+  updated_at: Date;
 
-  @OneToOne(() => JobCategory, (job_category) => job_category.job_post, {
+  @ManyToOne(() => JobCategory, (job_category) => job_category.job_post, {
     onDelete: 'CASCADE',
   }) // specify inverse side as a second parameter
   @JoinColumn({ name: 'job_category_id' })

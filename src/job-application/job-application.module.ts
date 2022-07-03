@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CvModule } from 'src/cv/cv.module';
 import { JobPostModule } from 'src/job-post/job-post.module';
 import { UserModule } from 'src/user/user.module';
 import { JobApplication } from './entities/job-application.entity';
@@ -11,6 +12,7 @@ import { JobApplicationService } from './job-application.service';
     TypeOrmModule.forFeature([JobApplication]),
     UserModule,
     JobPostModule,
+    CvModule,
   ],
   controllers: [JobApplicationController],
   providers: [JobApplicationService],

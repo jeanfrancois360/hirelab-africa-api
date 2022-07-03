@@ -8,9 +8,9 @@ import {
 } from 'class-validator';
 
 export enum StatusEnum {
-  ACCEPT = 'accept',
-  REJECT = 'reject',
-  PENDING = 'pending',
+  ACCEPT = 'Accepted',
+  REJECT = 'Rejected',
+  PENDING = 'Pending',
 }
 
 export class CreateJobApplicationDto {
@@ -47,6 +47,12 @@ export class CreateJobApplicationDto {
   @IsNotEmpty()
   readonly postcode: string;
 
+  @Length(2, 100)
+  @IsNotEmpty()
+  readonly file: string;
+
+  readonly cv_id?: number;
+
   @IsNotEmpty()
   readonly cover_letter: string;
 
@@ -59,8 +65,7 @@ export class CreateJobApplicationDto {
   @IsNotEmpty()
   readonly candidate: number;
 
-  @IsInt()
-  @Min(1)
+  @Length(2, 100)
   @IsNotEmpty()
-  readonly job_post_id: number;
+  readonly job_post_uuid: string;
 }

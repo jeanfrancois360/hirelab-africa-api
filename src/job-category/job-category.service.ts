@@ -41,7 +41,10 @@ export class JobCategoryService {
 
   async getJobCategories(): Promise<JobCategory[]> {
     try {
-      return await this.jobCategoryRepository.find({ order: { id: 'DESC' } });
+      return await this.jobCategoryRepository.find({
+        order: { id: 'ASC' },
+        relations: ['job_post'],
+      });
     } catch (error) {
       throw error;
     }

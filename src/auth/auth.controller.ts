@@ -1,4 +1,5 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/signin.dto';
@@ -15,5 +16,13 @@ export class AuthController {
   @Post('/signup')
   signUp(@Body() createUserDto: CreateUserDto) {
     return this.authService.signUp(createUserDto);
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('status')
+  authenticationStatus(): object {
+    return {
+      status: '200 OK',
+      message: 'Authenticated',
+    };
   }
 }

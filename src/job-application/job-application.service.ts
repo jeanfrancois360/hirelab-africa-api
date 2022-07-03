@@ -1,9 +1,6 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CvService } from 'src/cv/cv.service';
 import { JobPostService } from 'src/job-post/job-post.service';
 import { UserService } from 'src/user/user.service';
 import { uuidGen } from 'src/utils/uuid-gen';
@@ -19,28 +16,57 @@ export class JobApplicationService {
     private readonly jobApplicationRepository: Repository<JobApplication>,
     private readonly userService: UserService,
     private readonly jobPostService: JobPostService,
+    private readonly cvService: CvService,
   ) {}
 
   async createJobApplication(
     createJobApplicationDto: CreateJobApplicationDto,
   ): Promise<JobApplication> {
     try {
-      const jobPost = await this.jobPostService.getJobPostById(
-        createJobApplicationDto.job_post_id,
+      const jobPost = await this.jobPostService.getJobPostByUUID(
+        createJobApplicationDto.job_post_uuid,
       );
-      if (jobPost) throw new ConflictException(`BlogCategory not found!`);
 
       const candidate = await this.userService.getUserById(
         createJobApplicationDto.candidate,
       );
-      if (candidate) throw new ConflictException(`User not found`);
-      const newJobApplication = this.jobApplicationRepository.create(
-        createJobApplicationDto,
-      );
+
+      const newJobApplication = this.jobApplicationRepository.create({
+        first_name: createJobApplicationDto.first_name,
+        last_name: createJobApplicationDto.last_name,
+        email: createJobApplicationDto.email,
+        phone: createJobApplicationDto.phone,
+        address: createJobApplicationDto.address,
+        city: createJobApplicationDto.city,
+        country: createJobApplicationDto.country,
+        postcode: createJobApplicationDto.postcode,
+        cover_letter: createJobApplicationDto.cover_letter,
+      });
       newJobApplication.uuid = uuidGen();
       newJobApplication.job_post = jobPost;
       newJobApplication.user = candidate;
-      return await this.jobApplicationRepository.save(newJobApplication);
+      if (await this.jobApplicationRepository.save(newJobApplication)) {
+        if (createJobApplicationDto.cv_id === null) {
+          // Add new cv
+          if (
+            await this.cvService.createCv({
+              file: createJobApplicationDto.file,
+              candidate: createJobApplicationDto.candidate,
+            })
+          ) {
+            return newJobApplication;
+          }
+        } else {
+          if (
+            await this.cvService.updateCv(createJobApplicationDto.cv_id, {
+              file: createJobApplicationDto.file,
+              candidate: createJobApplicationDto.candidate,
+            })
+          ) {
+            return newJobApplication;
+          }
+        }
+      }
     } catch (error) {
       throw error;
     }
