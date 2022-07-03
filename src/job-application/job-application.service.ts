@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CvService } from 'src/cv/cv.service';
 import { JobPostService } from 'src/job-post/job-post.service';
 import { UserService } from 'src/user/user.service';
-import { uuidGen } from 'src/utils/uuid-gen';
+import { v4 as uuidv4 } from 'uuid';
 import { Repository } from 'typeorm';
 import { CreateJobApplicationDto } from './dto/create-job-application.dto';
 import { UpdateJobApplicationDto } from './dto/update-job-application.dto';
@@ -42,7 +42,7 @@ export class JobApplicationService {
         postcode: createJobApplicationDto.postcode,
         cover_letter: createJobApplicationDto.cover_letter,
       });
-      newJobApplication.uuid = uuidGen();
+      newJobApplication.uuid = uuidv4();
       newJobApplication.job_post = jobPost;
       newJobApplication.user = candidate;
       if (await this.jobApplicationRepository.save(newJobApplication)) {

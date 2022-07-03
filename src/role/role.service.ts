@@ -10,7 +10,7 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
 import slugify from 'slugify';
 import { slugifyConstants } from 'src/constants';
-import { uuidGen } from 'src/utils/uuid-gen';
+import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class RoleService {
   constructor(
@@ -28,7 +28,7 @@ export class RoleService {
 
       const newRole = this.roleRepository.create(createRoleDto);
       newRole.slug = slugify(newRole.name, slugifyConstants);
-      newRole.uuid = uuidGen();
+      newRole.uuid = uuidv4();
       return await this.roleRepository.save(newRole);
     } catch (error) {
       throw error;

@@ -6,7 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import slugify from 'slugify';
 import { slugifyConstants } from 'src/constants';
-import { uuidGen } from 'src/utils/uuid-gen';
+import { v4 as uuidv4 } from 'uuid';
 import { Like, Repository } from 'typeorm';
 import { CreateJobCategoryDto } from './dto/create-job-category.dto';
 import { UpdateJobCategoryDto } from './dto/update-job-category.dto';
@@ -32,7 +32,7 @@ export class JobCategoryService {
       const newJobCategory =
         this.jobCategoryRepository.create(createJobCategoryDto);
       newJobCategory.slug = slugify(newJobCategory.name, slugifyConstants);
-      newJobCategory.uuid = uuidGen();
+      newJobCategory.uuid = uuidv4();
       return await this.jobCategoryRepository.save(newJobCategory);
     } catch (error) {
       throw error;

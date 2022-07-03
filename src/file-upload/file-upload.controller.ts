@@ -18,7 +18,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 //       storage: diskStorage({
 //         destination: './uploads',
 //         filename: (req, file, cb) => {
-//           const customFileName = uuid(),
+//           const customFileName = uuidv4(),
 //             fileExtension = file.originalname.split('.')[1]; // get file extension from original file name
 //           cb(null, customFileName + '.' + fileExtension);
 //         },

@@ -8,7 +8,7 @@ import slugify from 'slugify';
 import { BlogCategoryService } from 'src/blog-category/blog-category.service';
 import { slugifyConstants } from 'src/constants';
 import { UserService } from 'src/user/user.service';
-import { uuidGen } from 'src/utils/uuid-gen';
+import { v4 as uuidv4 } from 'uuid';
 import { Repository } from 'typeorm';
 import { CreateBlogPostDto } from './dto/create-blog-post.dto';
 import { UpdateBlogPostDto } from './dto/update-blog-post.dto';
@@ -37,7 +37,7 @@ export class BlogPostService {
       if (author) throw new ConflictException(`User not found`);
       const newBlogPost = this.blogPostRepository.create(createBlogPostDto);
       newBlogPost.slug = slugify(newBlogPost.title, slugifyConstants);
-      newBlogPost.uuid = uuidGen();
+      newBlogPost.uuid = uuidv4();
       newBlogPost.blog_category = blogCategory;
       newBlogPost.user = author;
       return await this.blogPostRepository.save(newBlogPost);

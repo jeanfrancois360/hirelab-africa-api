@@ -8,7 +8,7 @@ import slugify from 'slugify';
 import { slugifyConstants } from 'src/constants';
 import { JobCategoryService } from 'src/job-category/job-category.service';
 import { UserService } from 'src/user/user.service';
-import { uuidGen } from 'src/utils/uuid-gen';
+import { v4 as uuidv4 } from 'uuid';
 import { Repository } from 'typeorm';
 import { CreateJobPostDto } from './dto/create-job-post.dto';
 import { UpdateJobPostDto } from './dto/update-job-post.dto';
@@ -34,7 +34,7 @@ export class JobPostService {
 
       const newJobPost = this.jobPostRepository.create(createJobPostDto);
       newJobPost.slug = slugify(newJobPost.title, slugifyConstants);
-      newJobPost.uuid = uuidGen();
+      newJobPost.uuid = uuidv4();
       newJobPost.job_category = jobCategory;
       newJobPost.user = posted_by;
       return await this.jobPostRepository.save(newJobPost);

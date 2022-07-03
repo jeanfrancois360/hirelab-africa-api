@@ -9,7 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
-import { uuidGen } from 'src/utils/uuid-gen';
+import { v4 as uuidv4 } from 'uuid';
 import { RoleService } from 'src/role/role.service';
 import { ProfileService } from 'src/profile/profile.service';
 
@@ -42,7 +42,7 @@ export class UserService {
         password: createUserDto.password,
       });
       newUser.role = role;
-      newUser.uuid = uuidGen();
+      newUser.uuid = uuidv4();
       if (await this.userRepository.save(newUser)) {
         if (await this.profileService.createProfile(createUserDto)) {
           return newUser;

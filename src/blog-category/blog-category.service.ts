@@ -6,7 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import slugify from 'slugify';
 import { slugifyConstants } from 'src/constants';
-import { uuidGen } from 'src/utils/uuid-gen';
+import { v4 as uuidv4 } from 'uuid';
 import { Like, Repository } from 'typeorm';
 import { CreateBlogCategoryDto } from './dto/create-blog-category.dto';
 import { UpdateBlogCategoryDto } from './dto/update-blog-category.dto';
@@ -33,7 +33,7 @@ export class BlogCategoryService {
         createBlogCategoryDto,
       );
       newBlogCategory.slug = slugify(newBlogCategory.name, slugifyConstants);
-      newBlogCategory.uuid = uuidGen();
+      newBlogCategory.uuid = uuidv4();
       return await this.blogCategoryRepository.save(newBlogCategory);
     } catch (error) {
       throw error;

@@ -5,12 +5,12 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from 'src/user/user.service';
-import { uuidGen } from 'src/utils/uuid-gen';
+import { v4 as uuidv4 } from 'uuid';
 import { Repository } from 'typeorm';
 import { CreateCvDto } from './dto/create-cv.dto';
 import { UpdateCvDto } from './dto/update-cv.dto';
 import { Cv } from './entities/cv.entity';
-import fs from 'fs';
+// import fs from 'fs';
 
 @Injectable()
 export class CvService {
@@ -25,7 +25,8 @@ export class CvService {
       const user = await this.userService.getUserById(createCvDto.candidate);
       if (!user) throw new ConflictException(`User not found!`);
       const newCv = this.cvRepository.create(createCvDto);
-      newCv.uuid = uuidGen();
+      newCv.uuid = uuidv4();
+      newCv.user = user;
       return await this.cvRepository.save(newCv);
     } catch (error) {
       throw error;
