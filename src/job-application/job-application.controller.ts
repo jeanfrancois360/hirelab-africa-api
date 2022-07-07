@@ -34,12 +34,25 @@ export class JobApplicationController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  getJobApplications(
+  async getJobApplications(
     @Headers('Authorization') auth: string,
   ): Promise<JobApplication[]> {
-    const json = this.authService.decodeToken(auth);
-
-    return this.jobApplicationService.getJobApplications();
+    const userInfo = await Object(
+      this.authService.decodeToken(auth).then((data) => {
+        return data;
+      }),
+    );
+    if (userInfo.role === 'Employer') {
+      return this.jobApplicationService.getEmployerJobApplications(
+        userInfo.sub,
+      );
+    } else if (userInfo.role === 'Candidate') {
+      return this.jobApplicationService.getCandidateJobApplications(
+        userInfo.sub,
+      );
+    } else {
+      return this.jobApplicationService.getJobApplications();
+    }
   }
 
   @UseGuards(AuthGuard('jwt'))

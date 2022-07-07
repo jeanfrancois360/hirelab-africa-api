@@ -54,6 +54,22 @@ export class JobPostService {
     }
   }
 
+  async getEmployerJobPosts(id: number): Promise<JobPost[]> {
+    try {
+      return await this.jobPostRepository.find({
+        order: { id: 'DESC' },
+        relations: ['job_category', 'user', 'user.profile'],
+        where: {
+          user: {
+            id: id,
+          },
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getJobPostById(id: number): Promise<JobPost> {
     try {
       const jobPost = await this.jobPostRepository.findOneBy({

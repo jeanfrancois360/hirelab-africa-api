@@ -7,11 +7,11 @@ import {
   Param,
   Patch,
   Post,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from 'src/auth/auth.service';
-import { IUserInfo } from 'src/interfaces';
 import { CreateJobPostDto } from './dto/create-job-post.dto';
 import { UpdateJobPostDto } from './dto/update-job-post.dto';
 import { JobPost } from './entities/job-post.entity';
@@ -35,6 +35,23 @@ export class JobPostController {
     return this.jobPostService.getJobPosts();
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @Get('employer')
+  async getEmployerJobPosts(
+    @Headers('Authorization') auth: string,
+  ): Promise<JobPost[]> {
+    const userInfo = await Object(
+      this.authService.decodeToken(auth).then((data) => {
+        return data;
+      }),
+    );
+    if (userInfo.role === 'Employer') {
+      return this.jobPostService.getEmployerJobPosts(userInfo.sub);
+    } else {
+      throw new UnauthorizedException('Not Allowed');
+    }
+  }
+
   @Get(':id')
   getJobPost(@Param('id') id: number): Promise<JobPost> {
     return this.jobPostService.getJobPostById(id);
@@ -47,13 +64,16 @@ export class JobPostController {
     @Body() updateJobPostDto: UpdateJobPostDto,
     @Headers('Authorization') auth: string,
   ): Promise<JobPost> {
-    const userInfo = await this.authService.decodeToken(auth).then((result) => {
-      return result;
-    });
-    const data = Object(userInfo);
-    console.log(data);
-
-    return this.jobPostService.updateJobPost(+id, updateJobPostDto);
+    const userInfo = await Object(
+      this.authService.decodeToken(auth).then((data) => {
+        return data;
+      }),
+    );
+    if (userInfo.role === 'Admin' || userInfo.role === 'Employer') {
+      return this.jobPostService.updateJobPost(+id, updateJobPostDto);
+    } else {
+      throw new UnauthorizedException('Not Allowed');
+    }
   }
 
   @UseGuards(AuthGuard('jwt'))
