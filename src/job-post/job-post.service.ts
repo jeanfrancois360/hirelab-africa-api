@@ -47,7 +47,7 @@ export class JobPostService {
     try {
       return await this.jobPostRepository.find({
         order: { id: 'DESC' },
-        relations: ['job_category', 'user'],
+        relations: ['job_category', 'user', 'user.profile'],
       });
     } catch (error) {
       throw error;

@@ -76,6 +76,39 @@ export class JobApplicationService {
     try {
       return await this.jobApplicationRepository.find({
         order: { id: 'DESC' },
+        relations: ['job_post', 'user', 'user.cv', 'user.profile'],
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getEmployerJobApplications(id: number): Promise<JobApplication[]> {
+    try {
+      return await this.jobApplicationRepository.find({
+        order: { id: 'DESC' },
+        relations: ['job_post', 'user', 'user.cv', 'user.profile'],
+        where: {
+          user: {
+            id: id,
+          },
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getCandidateJobApplications(id: number): Promise<JobApplication[]> {
+    try {
+      return await this.jobApplicationRepository.find({
+        order: { id: 'DESC' },
+        relations: ['job_post', 'user', 'user.cv', 'user.profile'],
+        where: {
+          user: {
+            id: id,
+          },
+        },
       });
     } catch (error) {
       throw error;

@@ -8,7 +8,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './entities/user.entity';
+import { StatusEnum, User } from './entities/user.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { RoleService } from 'src/role/role.service';
 import { ProfileService } from 'src/profile/profile.service';
@@ -40,6 +40,10 @@ export class UserService {
       const newUser = this.userRepository.create({
         email: createUserDto.email,
         password: createUserDto.password,
+        status:
+          createUserDto.role === 'Candidate'
+            ? StatusEnum.ACTIVE
+            : StatusEnum.INACTIVE,
       });
       newUser.role = role;
       newUser.uuid = uuidv4();

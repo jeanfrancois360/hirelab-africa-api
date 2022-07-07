@@ -22,6 +22,20 @@ export class CvService {
   async createCv(createCvDto: CreateCvDto): Promise<Cv> {
     try {
       // Check if candidate exists
+      const hasCV = await this.cvRepository.find({
+        relations: ['user'],
+        where: {
+          user: {
+            id: createCvDto.candidate,
+          },
+        },
+      });
+      if (hasCV && hasCV.length > 0) {
+        return await this.updateCv(hasCV[0].id, {
+          file: createCvDto.file,
+          candidate: createCvDto.candidate,
+        });
+      }
       const user = await this.userService.getUserById(createCvDto.candidate);
       if (!user) throw new ConflictException(`User not found!`);
       const newCv = this.cvRepository.create(createCvDto);
@@ -35,7 +49,10 @@ export class CvService {
 
   async getCvs(): Promise<Cv[]> {
     try {
-      return await this.cvRepository.find({ order: { id: 'DESC' } });
+      return await this.cvRepository.find({
+        order: { id: 'DESC' },
+        relations: ['user', 'user.profile', 'user.role'],
+      });
     } catch (error) {
       throw error;
     }

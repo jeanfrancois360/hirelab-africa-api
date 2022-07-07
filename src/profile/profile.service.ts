@@ -23,13 +23,7 @@ export class ProfileService {
     try {
       const user = await this.userService.getUserByEmail(createUserDto.email);
       if (!user) throw new ConflictException('User not found!');
-      const newProfile = this.profileRepository.create({
-        first_name: createUserDto.first_name,
-        last_name: createUserDto.last_name,
-        email: createUserDto.email,
-        company_name: createUserDto.company_name,
-        company_description: createUserDto.company_description,
-      });
+      const newProfile = this.profileRepository.create(createUserDto);
       newProfile.user = user;
       return await this.profileRepository.save(newProfile);
     } catch (error) {
@@ -71,6 +65,7 @@ export class ProfileService {
       profile.city = updateProfileDto.city;
       profile.country = updateProfileDto.country;
       profile.postcode = updateProfileDto.postcode;
+      profile.avatar = updateProfileDto.avatar;
 
       return await this.profileRepository.save(profile);
     } catch (error) {

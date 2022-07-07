@@ -8,8 +8,8 @@ import {
 } from 'class-validator';
 
 export enum StatusEnum {
-  ACCEPT = 'Accepted',
-  REJECT = 'Rejected',
+  ACCEPT = 'Accept',
+  REJECT = 'Reject',
   PENDING = 'Pending',
 }
 

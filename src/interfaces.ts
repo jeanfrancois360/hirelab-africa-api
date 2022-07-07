@@ -8,3 +8,12 @@ export interface interCategory {
   id: number;
   name: string;
 }
+
+export interface IUserInfo {
+  sub: number;
+  email: string;
+  role: string;
+  type: string;
+  iat: number;
+  exp: number;
+}

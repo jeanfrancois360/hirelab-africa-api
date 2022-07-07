@@ -16,6 +16,11 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+export enum StatusEnum {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+}
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -29,6 +34,13 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column({
+    type: 'enum',
+    enum: StatusEnum,
+    default: StatusEnum.ACTIVE,
+  })
+  status: StatusEnum;
 
   @CreateDateColumn({
     type: 'timestamp',

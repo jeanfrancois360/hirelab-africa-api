@@ -24,7 +24,6 @@ export class UserController {
     return this.userService.getUserByEmail(email);
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get('search-role/:role_name')
   getUserByRole(@Param('role_name') role_name: string): Promise<User[]> {
     return this.userService.getUserByRole(role_name);

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from 'src/auth/auth.module';
 import { CvModule } from 'src/cv/cv.module';
 import { JobPostModule } from 'src/job-post/job-post.module';
 import { UserModule } from 'src/user/user.module';
@@ -13,6 +14,7 @@ import { JobApplicationService } from './job-application.service';
     UserModule,
     JobPostModule,
     CvModule,
+    AuthModule,
   ],
   controllers: [JobApplicationController],
   providers: [JobApplicationService],

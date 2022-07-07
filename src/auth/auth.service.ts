@@ -19,12 +19,17 @@ export class AuthService {
     if (!user) throw new UnauthorizedException('Invalid credentials');
 
     const password = credentials.password;
-    const saltOrRounds = 16;
-    const hash = await bcrypt.hash(password, saltOrRounds);
+    const hash = user.password;
     const isMatch = await bcrypt.compare(password, hash);
+    console.log(isMatch);
     if (!isMatch) throw new UnauthorizedException('Invalid credentials');
 
-    const token_payload = { sub: user.id, email: user.email, type: 'user' };
+    const token_payload = {
+      sub: user.id,
+      email: user.email,
+      role: user.role.name,
+      type: 'user',
+    };
     return {
       user: {
         id: user.id,
@@ -45,5 +50,10 @@ export class AuthService {
       ...createUserDto,
       password: hash,
     });
+  }
+
+  async decodeToken(auth: string) {
+    const jwt = auth.replace('Bearer ', '');
+    return this.jwtTokenService.decode(jwt, { json: true });
   }
 }

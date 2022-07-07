@@ -10,9 +10,9 @@ import {
 } from 'typeorm';
 
 export enum StatusEnum {
-  ACCEPT = 'accept',
-  REJECT = 'reject',
-  PENDING = 'pending',
+  ACCEPT = 'Accept',
+  REJECT = 'Reject',
+  PENDING = 'Pending',
 }
 
 @Entity()
