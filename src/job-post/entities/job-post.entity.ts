@@ -14,6 +14,7 @@ import {
 export enum StatusEnum {
   ACTIVE = 'Active',
   INACTIVE = 'Inactive',
+  PUBLISH = 'Publish',
 }
 
 export enum TypeEnum {

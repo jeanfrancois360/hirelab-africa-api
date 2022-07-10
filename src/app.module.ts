@@ -14,9 +14,14 @@ import { AuthModule } from './auth/auth.module';
 import { FileUploadModule } from './file-upload/file-upload.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ConfigModule } from '@nestjs/config';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // no need to import into other modules
+    }),
     TypeOrmModule.forRoot(config),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
@@ -32,6 +37,7 @@ import { join } from 'path';
     ProfileModule,
     AuthModule,
     FileUploadModule,
+    MailModule,
   ],
 })
 export class AppModule {}

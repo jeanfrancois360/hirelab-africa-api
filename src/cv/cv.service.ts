@@ -58,6 +58,22 @@ export class CvService {
     }
   }
 
+  async getCandidateCvs(id: number): Promise<Cv[]> {
+    try {
+      return await this.cvRepository.find({
+        order: { id: 'DESC' },
+        relations: ['user', 'user.profile', 'user.role'],
+        where: {
+          user: {
+            id: id,
+          },
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getCvById(id: number): Promise<Cv> {
     try {
       const Cv = await this.cvRepository.findOneBy({ id: id });
@@ -74,7 +90,7 @@ export class CvService {
       if (!cv) {
         throw new NotFoundException(`A CV with id[${id}] could not be found!`);
       } else {
-        const path = `./uploads/${cv.file}`;
+        //const path = `./uploads/${cv.file}`;
         // Delete existing file from the storage
         // fs.unlink(path, function (err: any) {
         //   if (err) throw err;

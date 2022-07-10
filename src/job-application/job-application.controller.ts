@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -32,9 +33,14 @@ export class JobApplicationController {
     );
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get()
-  async getJobApplications(
+  async getJobApplications(): Promise<JobApplication[]> {
+    return this.jobApplicationService.getJobApplications();
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('employer')
+  async getEmployerJobApplications(
     @Headers('Authorization') auth: string,
   ): Promise<JobApplication[]> {
     const userInfo = await Object(
@@ -46,12 +52,27 @@ export class JobApplicationController {
       return this.jobApplicationService.getEmployerJobApplications(
         userInfo.sub,
       );
-    } else if (userInfo.role === 'Candidate') {
+    } else {
+      throw new UnauthorizedException('Not Allowed');
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('candidate')
+  async getCandidateJobApplications(
+    @Headers('Authorization') auth: string,
+  ): Promise<JobApplication[]> {
+    const userInfo = await Object(
+      this.authService.decodeToken(auth).then((data) => {
+        return data;
+      }),
+    );
+    if (userInfo.role === 'Candidate') {
       return this.jobApplicationService.getCandidateJobApplications(
         userInfo.sub,
       );
     } else {
-      return this.jobApplicationService.getJobApplications();
+      throw new UnauthorizedException('Not Allowed');
     }
   }
 

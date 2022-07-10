@@ -29,12 +29,12 @@ export class BlogPostService {
       const blogCategory = await this.blogCategoryService.getBlogCategoryById(
         createBlogPostDto.blog_category_id,
       );
-      if (blogCategory) throw new ConflictException(`BlogCategory not found!`);
+      if (!blogCategory) throw new ConflictException(`BlogCategory not found!`);
 
       const author = await this.userService.getUserById(
         createBlogPostDto.author,
       );
-      if (author) throw new ConflictException(`User not found`);
+      if (!author) throw new ConflictException(`User not found`);
       const newBlogPost = this.blogPostRepository.create(createBlogPostDto);
       newBlogPost.slug = slugify(newBlogPost.title, slugifyConstants);
       newBlogPost.uuid = uuidv4();
@@ -48,7 +48,10 @@ export class BlogPostService {
 
   async getBlogPosts(): Promise<BlogPost[]> {
     try {
-      return await this.blogPostRepository.find({ order: { id: 'DESC' } });
+      return await this.blogPostRepository.find({
+        order: { id: 'DESC' },
+        relations: ['user', 'user.profile', 'blog_category'],
+      });
     } catch (error) {
       throw error;
     }
@@ -76,16 +79,17 @@ export class BlogPostService {
       const blogCategory = await this.blogCategoryService.getBlogCategoryById(
         updateBlogPostDto.blog_category_id,
       );
-      if (blogCategory) throw new ConflictException(`BlogCategory not found!`);
+      if (!blogCategory) throw new ConflictException(`BlogCategory not found!`);
 
       const author = await this.userService.getUserById(
         updateBlogPostDto.author,
       );
-      if (author) throw new ConflictException(`User not found`);
+      if (!author) throw new ConflictException(`User not found`);
       blogPost.title = updateBlogPostDto.title;
       blogPost.slug = slugify(updateBlogPostDto.title, slugifyConstants);
       blogPost.description = updateBlogPostDto.description;
       blogPost.image = updateBlogPostDto.image;
+      blogPost.status = updateBlogPostDto.status;
       blogPost.blog_category = blogCategory;
       blogPost.user = author;
       return this.blogPostRepository.save(blogPost);

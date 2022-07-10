@@ -69,6 +69,7 @@ export class BlogCategoryService {
       if (!blogCategory) throw new NotFoundException(`BlogCategory not found!`);
       blogCategory.name = updateBlogCategoryDto.name;
       blogCategory.slug = slugify(blogCategory.name, slugifyConstants);
+      blogCategory.status = updateBlogCategoryDto.status;
       return this.blogCategoryRepository.save(blogCategory);
     } catch (error) {
       throw error;

@@ -9,9 +9,10 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-export enum StatusOptions {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
+export enum StatusEnum {
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive',
+  PUBLISH = 'Publish',
 }
 
 @Entity()
@@ -36,10 +37,10 @@ export class BlogPost {
 
   @Column({
     type: 'enum',
-    enum: StatusOptions,
-    default: StatusOptions.INACTIVE,
+    enum: StatusEnum,
+    default: StatusEnum.INACTIVE,
   })
-  status: StatusOptions;
+  status: StatusEnum;
 
   @CreateDateColumn({
     type: 'timestamp',

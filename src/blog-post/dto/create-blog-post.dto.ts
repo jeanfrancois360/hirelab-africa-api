@@ -1,4 +1,5 @@
-import { IsInt, IsNotEmpty, Length, Min } from 'class-validator';
+import { IsEnum, IsInt, IsNotEmpty, Length, Min } from 'class-validator';
+import { StatusEnum } from '../entities/blog-post.entity';
 
 export class CreateBlogPostDto {
   @Length(2, 100)
@@ -10,6 +11,10 @@ export class CreateBlogPostDto {
 
   @IsNotEmpty()
   readonly image: string;
+
+  @IsEnum(StatusEnum)
+  @IsNotEmpty()
+  readonly status: StatusEnum;
 
   @IsInt()
   @Min(1)

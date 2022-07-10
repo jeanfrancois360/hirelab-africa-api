@@ -8,8 +8,8 @@ import {
 } from 'typeorm';
 
 export enum StatusOptions {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive',
 }
 
 @Entity()
