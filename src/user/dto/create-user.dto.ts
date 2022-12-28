@@ -8,4 +8,5 @@ export class CreateUserDto {
   readonly company_description: string;
   readonly password: string;
   readonly role: string;
+  readonly status?: string;
 }

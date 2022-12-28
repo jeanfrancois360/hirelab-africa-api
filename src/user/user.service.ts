@@ -40,10 +40,11 @@ export class UserService {
       const newUser = this.userRepository.create({
         email: createUserDto.email,
         password: createUserDto.password,
-        status:
-          createUserDto.role === 'Candidate'
-            ? StatusEnum.ACTIVE
-            : StatusEnum.INACTIVE,
+        status: createUserDto.status
+          ? StatusEnum.ACTIVE
+          : createUserDto.role === 'Candidate'
+          ? StatusEnum.ACTIVE
+          : StatusEnum.INACTIVE,
       });
       newUser.role = role;
       newUser.uuid = uuidv4();
@@ -108,6 +109,11 @@ export class UserService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async updateUser(id: number): Promise<User> {
+    const user = await this.getUserById(id);
+    return this.userRepository.remove(user);
   }
 
   async deleteUser(id: number): Promise<User> {
