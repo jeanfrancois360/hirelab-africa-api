@@ -1,7 +1,7 @@
 import { IsInt, IsNotEmpty, Length, Min } from 'class-validator';
 
 export class CreateCvDto {
-  @Length(3, 100)
+  @Length(2, 100)
   @IsNotEmpty()
   readonly file: string;
 

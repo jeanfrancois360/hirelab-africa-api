@@ -6,14 +6,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 export enum StatusEnum {
-  ACCEPT = 'accept',
-  REJECT = 'reject',
-  PENDING = 'pending',
+  ACCEPT = 'Accept',
+  REJECT = 'Reject',
+  PENDING = 'Pending',
 }
 
 @Entity()
@@ -71,7 +70,7 @@ export class JobApplication {
   })
   updated_at: Date;
 
-  @OneToOne(() => User, (JobApplication) => JobApplication.job_application, {
+  @ManyToOne(() => User, (JobApplication) => JobApplication.job_application, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'user_id' })

@@ -8,22 +8,22 @@ import {
 } from 'class-validator';
 
 export enum StatusEnum {
-  ACCEPT = 'accept',
-  REJECT = 'reject',
-  PENDING = 'pending',
+  ACCEPT = 'Accept',
+  REJECT = 'Reject',
+  PENDING = 'Pending',
 }
 
 export class CreateJobApplicationDto {
-  @Length(3, 100)
+  @Length(2, 100)
   @IsNotEmpty()
   readonly first_name: string;
 
-  @Length(3, 100)
+  @Length(2, 100)
   @IsNotEmpty()
   readonly last_name: string;
 
   @IsEmail()
-  @Length(3, 100)
+  @Length(2, 100)
   @IsNotEmpty()
   readonly email: string;
 
@@ -31,7 +31,7 @@ export class CreateJobApplicationDto {
   @IsNotEmpty()
   readonly phone: string;
 
-  @Length(3, 100)
+  @Length(2, 100)
   @IsNotEmpty()
   readonly address: string;
 
@@ -39,13 +39,19 @@ export class CreateJobApplicationDto {
   @IsNotEmpty()
   readonly city: string;
 
-  @Length(3, 100)
+  @Length(2, 100)
   @IsNotEmpty()
   readonly country: string;
 
   @Length(2, 100)
   @IsNotEmpty()
   readonly postcode: string;
+
+  @Length(2, 100)
+  @IsNotEmpty()
+  readonly file: string;
+
+  readonly cv_id?: number;
 
   @IsNotEmpty()
   readonly cover_letter: string;
@@ -57,10 +63,9 @@ export class CreateJobApplicationDto {
   @IsInt()
   @Min(1)
   @IsNotEmpty()
-  readonly user_id: string;
+  readonly candidate: number;
 
-  @IsInt()
-  @Min(1)
+  @Length(2, 100)
   @IsNotEmpty()
-  readonly job_post: string;
+  readonly job_post_uuid: string;
 }

@@ -1,6 +1,8 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateJobApplicationDto } from './create-job-application.dto';
+import { IsEnum, IsNotEmpty } from 'class-validator';
+import { StatusEnum } from './create-job-application.dto';
 
-export class UpdateJobApplicationDto extends PartialType(
-  CreateJobApplicationDto,
-) {}
+export class UpdateJobApplicationDto {
+  @IsEnum(StatusEnum)
+  @IsNotEmpty()
+  readonly status: StatusEnum;
+}

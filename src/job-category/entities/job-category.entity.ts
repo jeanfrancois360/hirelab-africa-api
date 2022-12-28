@@ -3,13 +3,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 export enum StatusOptions {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive',
 }
 
 @Entity()
@@ -46,6 +46,6 @@ export class JobCategory {
   })
   update_at: Date;
 
-  @OneToOne(() => JobPost, (job_post) => job_post.job_category) // specify inverse side as a second parameter
+  @OneToMany(() => JobPost, (job_post) => job_post.job_category) // specify inverse side as a second parameter
   job_post: JobPost;
 }

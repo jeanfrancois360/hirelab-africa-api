@@ -6,13 +6,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-export enum StatusOptions {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
+export enum StatusEnum {
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive',
+  PUBLISH = 'Publish',
 }
 
 @Entity()
@@ -32,12 +32,15 @@ export class BlogPost {
   @Column('text')
   description: string;
 
+  @Column()
+  image: string;
+
   @Column({
     type: 'enum',
-    enum: StatusOptions,
-    default: StatusOptions.INACTIVE,
+    enum: StatusEnum,
+    default: StatusEnum.INACTIVE,
   })
-  status: StatusOptions;
+  status: StatusEnum;
 
   @CreateDateColumn({
     type: 'timestamp',
@@ -52,7 +55,7 @@ export class BlogPost {
   })
   update_at: Date;
 
-  @OneToOne(() => BlogCategory, (blog_category) => blog_category.blog_post) // specify inverse side as a second parameter
+  @ManyToOne(() => BlogCategory, (blog_category) => blog_category.blog_post) // specify inverse side as a second parameter
   @JoinColumn({ name: 'blog_category_id' })
   blog_category: BlogCategory;
 
